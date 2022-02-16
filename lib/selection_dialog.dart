@@ -62,7 +62,6 @@ class _SelectionDialogState extends State<SelectionDialog> {
 
   @override
   Widget build(BuildContext context) {
-    FocusNode autoFocus = FocusNode();
     FocusScope.of(context).requestFocus(autoFocus);
 
     return Stack(
