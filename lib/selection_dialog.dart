@@ -57,11 +57,12 @@ class SelectionDialog extends StatefulWidget {
 class _SelectionDialogState extends State<SelectionDialog> {
   /// this is useful for filtering purpose
   late List<CountryCode> filteredElements;
-  
+
   FocusNode autoFocus = FocusNode(canRequestFocus: true);
 
   @override
   Widget build(BuildContext context) {
+    FocusNode autoFocus = FocusNode();
     FocusScope.of(context).requestFocus(autoFocus);
 
     return Stack(
