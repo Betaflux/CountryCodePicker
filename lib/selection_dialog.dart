@@ -57,84 +57,100 @@ class SelectionDialog extends StatefulWidget {
 class _SelectionDialogState extends State<SelectionDialog> {
   /// this is useful for filtering purpose
   late List<CountryCode> filteredElements;
+  
+  FocusNode autoFocus = FocusNode(canRequestFocus: true);
 
   @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.all(0.0),
-        child: Container(
-          clipBehavior: Clip.hardEdge,
-          width: widget.size?.width ?? MediaQuery.of(context).size.width,
-          height:
-              widget.size?.height ?? MediaQuery.of(context).size.height * 0.85,
-          decoration: widget.boxDecoration ??
-              BoxDecoration(
-                color: widget.backgroundColor ?? Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                boxShadow: [
-                  BoxShadow(
-                    color: widget.barrierColor ?? Colors.grey.withOpacity(1),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: Offset(0, 3), // changes position of shadow
-                  ),
-                ],
-              ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              IconButton(
-                padding: const EdgeInsets.all(0),
-                iconSize: 20,
-                icon: widget.closeIcon!,
-                onPressed: () => Navigator.pop(context),
-              ),
-              if (!widget.hideSearch)
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: TextField(
-                    style: widget.searchStyle,
-                    decoration: widget.searchDecoration,
-                    onChanged: _filterElements,
-                  ),
-                ),
-              Expanded(
-                child: ListView(
-                  children: [
-                    widget.favoriteElements.isEmpty
-                        ? const DecoratedBox(decoration: BoxDecoration())
-                        : Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ...widget.favoriteElements.map(
-                                (f) => SimpleDialogOption(
-                                  child: _buildOption(f),
-                                  onPressed: () {
-                                    _selectItem(f);
-                                  },
-                                ),
-                              ),
-                              const Divider(),
-                            ],
-                          ),
-                    if (filteredElements.isEmpty)
-                      _buildEmptySearchWidget(context)
-                    else
-                      ...filteredElements.map(
-                        (e) => SimpleDialogOption(
-                          child: _buildOption(e),
-                          onPressed: () {
-                            _selectItem(e);
-                          },
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-            ],
+  Widget build(BuildContext context) {
+    FocusScope.of(context).requestFocus(autoFocus);
+
+    return Stack(
+      children: [
+        Align(
+          alignment: Alignment(0, -0.75),
+          child: CircleAvatar(
+            backgroundColor: widget.backgroundColor,
+            child: IconButton(
+              padding: const EdgeInsets.all(0),
+              icon: widget.closeIcon!,
+              onPressed: () => Navigator.pop(context),
+            ),
           ),
         ),
-      );
+        Align(
+          alignment: Alignment.center,
+          child: Container(
+            clipBehavior: Clip.hardEdge,
+            width: widget.size?.width ?? MediaQuery.of(context).size.width,
+            height: widget.size?.height ??
+                MediaQuery.of(context).size.height * 0.85,
+            decoration: widget.boxDecoration ??
+                BoxDecoration(
+                  color: widget.backgroundColor ?? Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: widget.barrierColor ?? Colors.grey.withOpacity(1),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
+                ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                SizedBox(height: 20),
+                if (!widget.hideSearch)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: TextField(
+                      focusNode: autoFocus,
+                      style: widget.searchStyle,
+                      decoration: widget.searchDecoration,
+                      onChanged: _filterElements,
+                    ),
+                  ),
+                Expanded(
+                  child: ListView(
+                    children: [
+                      if (!widget.favoriteElements.isEmpty)
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ...widget.favoriteElements.map(
+                              (f) => SimpleDialogOption(
+                                child: _buildOption(f),
+                                onPressed: () {
+                                  _selectItem(f);
+                                },
+                              ),
+                            ),
+                            const Divider(),
+                          ],
+                        ),
+                      if (filteredElements.isEmpty)
+                        _buildEmptySearchWidget(context)
+                      else
+                        ...filteredElements.map(
+                          (e) => SimpleDialogOption(
+                            child: _buildOption(e),
+                            onPressed: () {
+                              _selectItem(e);
+                            },
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
   Widget _buildOption(CountryCode e) {
     return Container(
