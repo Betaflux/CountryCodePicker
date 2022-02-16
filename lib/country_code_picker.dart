@@ -84,13 +84,15 @@ class CountryCodePicker extends StatefulWidget {
   /// with customized codes.
   final List<Map<String, String>> countryList;
 
+  final Color dropDownMenuColor;
+
   CountryCodePicker({
     this.onChanged,
     this.onInit,
     this.initialSelection,
     this.favorite = const [],
     this.textStyle,
-    this.padding = const EdgeInsets.all(8.0),
+    this.padding = const EdgeInsets.symmetric(vertical: 8.0),
     this.showCountryOnly = false,
     this.searchDecoration = const InputDecoration(),
     this.searchStyle,
@@ -118,6 +120,7 @@ class CountryCodePicker extends StatefulWidget {
     this.dialogBackgroundColor,
     this.closeIcon = const Icon(Icons.close),
     this.countryList = codes,
+    this.dropDownMenuColor = Colors.white,
     Key? key,
   }) : super(key: key);
 
@@ -153,6 +156,7 @@ class CountryCodePickerState extends State<CountryCodePicker> {
   List<CountryCode> favoriteElements = [];
 
   CountryCodePickerState(this.elements);
+  
 
   @override
   Widget build(BuildContext context) {
@@ -205,18 +209,12 @@ class CountryCodePickerState extends State<CountryCodePicker> {
                   ),
                 ),
               if (widget.showDropDownButton)
-                Flexible(
-                  flex: widget.alignLeft ? 0 : 1,
-                  fit: widget.alignLeft ? FlexFit.tight : FlexFit.loose,
-                  child: Padding(
-                      padding: widget.alignLeft
-                          ? const EdgeInsets.only(right: 16.0, left: 8.0)
-                          : const EdgeInsets.only(right: 16.0),
-                      child: Icon(
-                        Icons.arrow_drop_down,
-                        color: Colors.grey,
-                        size: widget.flagWidth,
-                      )),
+                Padding(
+                  padding: const EdgeInsets.only(left: 6.0),
+                  child: Icon(
+                    Icons.keyboard_arrow_down_rounded,
+                    color: widget.dropDownMenuColor,
+                  ),
                 ),
             ],
           ),
@@ -258,7 +256,6 @@ class CountryCodePickerState extends State<CountryCodePicker> {
   @override
   void initState() {
     super.initState();
-
     if (widget.initialSelection != null) {
       selectedItem = elements.firstWhere(
           (e) =>
