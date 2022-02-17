@@ -156,7 +156,6 @@ class CountryCodePickerState extends State<CountryCodePicker> {
   List<CountryCode> favoriteElements = [];
 
   CountryCodePickerState(this.elements);
-  
 
   @override
   Widget build(BuildContext context) {
@@ -281,8 +280,6 @@ class CountryCodePickerState extends State<CountryCodePicker> {
   void showCountryCodePickerDialog() {
     if (!UniversalPlatform.isAndroid && !UniversalPlatform.isIOS) {
       showDialog(
-        barrierColor: widget.barrierColor ?? Colors.grey.withOpacity(0.5),
-        // backgroundColor: widget.backgroundColor ?? Colors.transparent,
         context: context,
         builder: (context) => Center(
           child: Container(
@@ -325,26 +322,32 @@ class CountryCodePickerState extends State<CountryCodePicker> {
         barrierColor: widget.barrierColor ?? Colors.grey.withOpacity(0.5),
         backgroundColor: widget.backgroundColor ?? Colors.transparent,
         context: context,
-        builder: (context) => Center(
-          child: SelectionDialog(
-            elements,
-            favoriteElements,
-            showCountryOnly: widget.showCountryOnly,
-            emptySearchBuilder: widget.emptySearchBuilder,
-            searchDecoration: widget.searchDecoration,
-            searchStyle: widget.searchStyle,
-            textStyle: widget.dialogTextStyle,
-            boxDecoration: widget.boxDecoration,
-            showFlag: widget.showFlagDialog != null
-                ? widget.showFlagDialog
-                : widget.showFlag,
-            flagWidth: widget.flagWidth,
-            flagDecoration: widget.flagDecoration,
-            size: widget.dialogSize,
-            backgroundColor: widget.dialogBackgroundColor,
-            barrierColor: widget.barrierColor,
-            hideSearch: widget.hideSearch,
-            closeIcon: widget.closeIcon,
+        builder: (context) => GestureDetector(
+          onTap: (() => Navigator.pop(context)),
+          child: Container(
+            color: Colors.transparent,
+            child: Center(
+              child: SelectionDialog(
+                elements,
+                favoriteElements,
+                showCountryOnly: widget.showCountryOnly,
+                emptySearchBuilder: widget.emptySearchBuilder,
+                searchDecoration: widget.searchDecoration,
+                searchStyle: widget.searchStyle,
+                textStyle: widget.dialogTextStyle,
+                boxDecoration: widget.boxDecoration,
+                showFlag: widget.showFlagDialog != null
+                    ? widget.showFlagDialog
+                    : widget.showFlag,
+                flagWidth: widget.flagWidth,
+                flagDecoration: widget.flagDecoration,
+                size: widget.dialogSize,
+                backgroundColor: widget.dialogBackgroundColor,
+                barrierColor: widget.barrierColor,
+                hideSearch: widget.hideSearch,
+                closeIcon: widget.closeIcon,
+              ),
+            ),
           ),
         ),
       ).then((e) {

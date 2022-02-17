@@ -67,17 +67,6 @@ class _SelectionDialogState extends State<SelectionDialog> {
     return Stack(
       children: [
         Align(
-          alignment: Alignment(0, -0.75),
-          child: CircleAvatar(
-            backgroundColor: widget.backgroundColor,
-            child: IconButton(
-              padding: const EdgeInsets.all(0),
-              icon: widget.closeIcon!,
-              onPressed: () => Navigator.pop(context),
-            ),
-          ),
-        ),
-        Align(
           alignment: Alignment.center,
           child: Container(
             clipBehavior: Clip.hardEdge,
@@ -115,7 +104,7 @@ class _SelectionDialogState extends State<SelectionDialog> {
                 Expanded(
                   child: ListView(
                     children: [
-                      if (!widget.favoriteElements.isEmpty)
+                      if (widget.favoriteElements.isNotEmpty)
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
